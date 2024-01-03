@@ -1,11 +1,12 @@
 import subprocess
 
 from runtime import COLOR as color
+from runtime import VAL as val
 
 
 def get_ffmpeg_version():
     try:
-        result = subprocess.run(["ffmpeg", '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True,
+        result = subprocess.run([val.ffmpeg, '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True,
                                 text=True)
         return result.stdout.splitlines()[0]
     except subprocess.CalledProcessError:
@@ -14,7 +15,7 @@ def get_ffmpeg_version():
 
 def is_ffmpeg_available():
     try:
-        subprocess.run(['ffmpeg', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        subprocess.run([val.ffmpeg, '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         return True
     except subprocess.CalledProcessError:
         return False

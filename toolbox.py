@@ -12,7 +12,8 @@ MENU = """
 ------END------
 """
 
-if __name__ == '__main__':
+
+def main():
     print(color.cyan, MENU, color.end)
     print("请输入指令对应的编号")
     command = input(">>")
@@ -23,9 +24,13 @@ if __name__ == '__main__':
         case "2":
             sim.main()
         case "3":
-            print(f"{color.yellow}鉴于依赖项Librosa还没支持Python3.12，")
+            print(f"{color.yellow}鉴于依赖库Librosa还没支持Python3.12，")
             print(f"因此我先摸鱼一会儿，此功能暂不可用{color.end}")
         case "4":
             wav2flac.main()
         case _:
             print(f"{color.red}无效的命令{color.end}")
+
+
+if __name__ == "__main__":
+    main()

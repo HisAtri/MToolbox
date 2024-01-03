@@ -22,6 +22,7 @@ def main():
     # 检查input_dir是否为合法路径
     if not os.path.isdir(input_dir):
         print(f"{color.red}定义的WAV文件路径不存在{color.end}")
+        return
 
     # 遍历input_dir下的所有wav文件
     wav_files = []
@@ -35,6 +36,12 @@ def main():
                 real_output_file = re.sub(r'\.wav$', '.flac', output_file, flags=re.IGNORECASE)
                 wav_files.append([input_file, real_output_file])
 
+    if len(wav_files) == 0:
+        print(f"{color.red}指定目录下未找到WAV文件{color.end}")
+        return
+
+    print(f"{color.green}已获取{len(wav_files)}个WAV文件，开始转换{color.end}")
+
     for obj in wav_files:
         command = [val.ffmpeg, "-i", obj[0], "-c:a", "flac", "-compression_level", "8", "-write_id3v2", "1", "-y", obj[1]]
         print(command)
@@ -43,7 +50,7 @@ def main():
             print(f"{color.bg_green}File {obj[1]} transcode successfully{color.end}")
             succeed_list.append(obj[0])
         else:
-            print(f"{color.bg_red}{obj[0]} FFmpeg exit with code {result.returncode}{color.end}")
+            print(f"{color.red}{obj[0]}Error! ffmpeg abort with code {result.returncode}{color.end}")
 
     del_det = input("是否删除成功转换的文件(Y/N :N)")
     if del_det and del_det in "Yy":
