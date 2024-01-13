@@ -10,13 +10,15 @@ from .. import check_ffmpeg
 
 def main():
     color.clear_screen()
+    extensions = (".wav", ".wmv", ".aac")
     if not check_ffmpeg.is_ffmpeg_available():
         print(f"{color.red}ffmpeg命令不可用。\n请前往 https://ffmpeg.org 安装FFmpeg{color.end}")
         return
     print(
         "此功能需要ffmpeg\n- 程序会自动遍历子目录下的所有WAV文件\n- 转换为FLAC后，新路径中保留目录结构\n- 输出目录留空，代表在原地转码")
-    input_dir = input(f"{color.magenta}要转换的WAV文件目录：{color.end}")
-    output_dir = input(f"{color.magenta}FLAC文件输出目录（留空代表与WAV文件相同）：{color.end}")
+    print(f"此功能支持自动识别并转换{"/".join(extensions)}文件")
+    input_dir = input(f"{color.magenta}要转换的音乐文件目录：{color.end}")
+    output_dir = input(f"{color.magenta}FLAC文件输出目录（留空代表与原始文件相同）：{color.end}")
     if not output_dir:
         output_dir = input_dir
     # 检查input_dir是否为合法路径
@@ -29,7 +31,7 @@ def main():
     succeed_list = []
     for root, dirs, files in os.walk(input_dir):
         for file in files:
-            if file.lower().endswith(".wav"):
+            if file.lower().endswith(extensions):
                 input_file = os.path.join(root, file)
                 output_file = os.path.join(output_dir,
                                            os.path.relpath(os.path.join(root, file), input_dir))
